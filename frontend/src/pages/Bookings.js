@@ -60,17 +60,20 @@ class BookingsPage extends Component {
       });
   };
 
-  deleteBookingHandler = bookingId => {
+  deleteBookingHandler = (bookingId) => {
     this.setState({ isLoading: true });
     const requestBody = {
       query: `
-        mutation {
-            cancelBooking(bookingId: "${bookingId}") {
-                _id
-                title
+            mutation CancelBooking($id: ID!) {
+                cancelBooking(bookingId: $id) {
+                    _id
+                    title
+                }
             }
-        }
-    `,
+        `,
+      variables: {
+        id: bookingId,
+      },
     };
 
     // const token = this.context.token;
@@ -90,11 +93,11 @@ class BookingsPage extends Component {
         return res.json();
       })
       .then((resData) => {
-        this.setState(prevState => {
-            const updatedBookings = prevState.bookings.filter(booking => {
-                return booking._id !== bookingId;
-            });
-            return {bookings: updatedBookings, isLoading: false}
+        this.setState((prevState) => {
+          const updatedBookings = prevState.bookings.filter((booking) => {
+            return booking._id !== bookingId;
+          });
+          return { bookings: updatedBookings, isLoading: false };
         });
       })
       .catch((err) => {
@@ -109,7 +112,10 @@ class BookingsPage extends Component {
         {this.state.isLoading ? (
           <Spinner />
         ) : (
-          <BookingList bookings={this.state.bookings} onDelete={this.deleteBookingHandler}/>
+          <BookingList
+            bookings={this.state.bookings}
+            onDelete={this.deleteBookingHandler}
+          />
         )}
       </React.Fragment>
     );
