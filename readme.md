@@ -60,7 +60,7 @@ frontend/src/
 1. Clone the repository and navigate to the project root:
 
    ```sh
-   git clone https://github.com/your-username/event-booker.git
+   git clone https://github.com/kenth727/event-booker.git
    cd event-booker
    ```
 
